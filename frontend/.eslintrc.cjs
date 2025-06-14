@@ -1,5 +1,5 @@
 /**
- * This is intended to be a basic starting point for linting in the Indie Stack.
+ * This is intended to be a basic starting point for linting in your app.
  * It relies on recommended configs out of the box for simplicity, but you can
  * and should modify this configuration to best suit your team's needs.
  */
@@ -19,6 +19,7 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
+  ignorePatterns: ["!**/.server", "!**/.client"],
 
   // Base config
   extends: ["eslint:recommended"],
@@ -33,7 +34,6 @@ module.exports = {
         "plugin:react/jsx-runtime",
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
-        "prettier",
       ],
       settings: {
         react: {
@@ -44,12 +44,9 @@ module.exports = {
           { name: "Link", linkAttribute: "to" },
           { name: "NavLink", linkAttribute: "to" },
         ],
-      },
-      rules: {
-        "react/jsx-no-leaked-render": [
-          "warn",
-          { validStrategies: ["ternary"] },
-        ],
+        "import/resolver": {
+          typescript: {},
+        },
       },
     },
 
@@ -71,63 +68,14 @@ module.exports = {
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/stylistic",
         "plugin:import/recommended",
         "plugin:import/typescript",
-        "prettier",
       ],
-      rules: {
-        "import/order": [
-          "error",
-          {
-            alphabetize: { caseInsensitive: true, order: "asc" },
-            groups: ["builtin", "external", "internal", "parent", "sibling"],
-            "newlines-between": "always",
-          },
-        ],
-      },
-    },
-
-    // Markdown
-    {
-      files: ["**/*.md"],
-      plugins: ["markdown"],
-      extends: ["plugin:markdown/recommended-legacy", "prettier"],
-    },
-
-    // Jest/Vitest
-    {
-      files: ["**/*.test.{js,jsx,ts,tsx}"],
-      plugins: ["jest", "jest-dom", "testing-library"],
-      extends: [
-        "plugin:jest/recommended",
-        "plugin:jest-dom/recommended",
-        "plugin:testing-library/react",
-        "prettier",
-      ],
-      env: {
-        "jest/globals": true,
-      },
-      settings: {
-        jest: {
-          // We're using vitest which has a very similar API to jest
-          // (so the linting plugins work nicely), but it means we
-          // have to set the jest version explicitly.
-          version: 28,
-        },
-      },
-    },
-
-    // Cypress
-    {
-      files: ["cypress/**/*.ts"],
-      plugins: ["cypress"],
-      extends: ["plugin:cypress/recommended", "prettier"],
     },
 
     // Node
     {
-      files: [".eslintrc.js", "mocks/**/*.js"],
+      files: [".eslintrc.cjs"],
       env: {
         node: true,
       },
